@@ -1,0 +1,50 @@
+.navbar-custom{
+    background-color:#440062;
+    color:#ffffff;
+}
+
+.container .sidebar{
+    margin-top: 50px;
+    background-color:rgba(210,183,235,0.3);
+	
+	
+}
+
+.sidebar .avatar{
+    margin-top: 80px;
+	margin-left:50px;
+}
+
+.sidebar .username{
+    font-size: 25px;
+}
+.usr-data-hori  .marked{
+    margin-left: 70px;
+}
+.usr-data-hori  .my-thread{
+    margin-left: 20px;
+}
+
+
+.sidebar .usr-data-list .data-list li{
+    margin-bottom: 25px;
+	margin-left: 20px;
+}
+
+.search-bar{
+    margin-top: 80px;
+}
+
+.search-bar .form-control{
+    border:3px solid rgba(160,102,188,0.8);
+}
+
+.search-bar .search-btn{
+    background-color:rgba(160,102,188,0.8);
+	border-color:rgba(160,102,188,0.8);
+}
+
+.showing-bar{
+    background-color: rgba(210,183,235,0.3);
+	height: 36px;
+}

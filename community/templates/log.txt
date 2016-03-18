@@ -1,0 +1,28 @@
+forum development log
+7/27 
+necessary installation : 
+1.pip install pillow ,for the avatar upload
+2.pip install django-contrib-comments , for comments function provided
+by django which is not included in the installation package after version
+1.8 .
+
+7/29
+csrf verification
+in html form, add {% csrf_token %}  
+from django.template import RequestContext
+render_to_response('login.html',context_instance=RequestContext(request))
+
+many to many : between two tables, one to many from each
+
+8/3
+when there's unique object returned, use objects.get(...), when there are multiple
+objects returned, use objects.fileter(...)
+***reminder: test how django deals with the exist tables, especially those that 
+are not created using django models.
+
+
+8/4
+since we decided to use the original user database , the User library is not available 
+now, so I made a session to keep record of the login condition. 
+The session is now hard coded into each view functions that login check is required.
+Consider to make is a class that can be used as global object.

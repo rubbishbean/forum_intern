@@ -1,0 +1,25 @@
+{% extends 'hottopic.html' %}
+
+{% block page-content %}
+
+<!-- 		话题部分 -->
+		<div class="margint30">
+		  <div class="columnlist"></div>
+		  {% for tag in tag_list %}
+		  <div class="columnlist margint15 paddingb10 paddingl10">
+			<div class="paddingb10"><strong><a href="/topic_detail/{{ tag.id }}"><div class="clr8e44ad">{{ tag }}</div></a></strong></div>
+			{% for bbs in tag.bbs_set.all %}
+			{% if forloop.counter <= 3%}
+			<div>
+			<a href="">{{ bbs.title }}</a><br>
+			</div>
+			{% endif %}
+			{% endfor %}
+		  </div>
+		  {% endfor %}
+		</div>
+
+<script type="text/javascript">
+window.document.title="话题";
+</script>		
+{% endblock %}

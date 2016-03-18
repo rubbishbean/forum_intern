@@ -1,0 +1,256 @@
+{% extends 'hottopic.html' %}
+
+{% block page-content %}
+
+<script src="/static/js/jquery-1.4.4.min.js" type="text/javascript"></script>
+<script src="/static/xheditor/xheditor-1.2.2.min.js" type="text/javascript"></script>
+<script type="text/javascript" src="/static/xheditor/xheditor_lang/zh-cn.js"></script>
+
+
+
+<br>
+		<div class="marginl24">
+		  <div class="paddingl10">
+			<ul class="list-inline list-unstyled">
+			{% for tag in bbs_obj.tags.all %}
+		  	  <li><span class="badge clrbedeaf4 clr8e44ad font18"><a href="/topic_detail/{{ tag.id }}">{{ tag }}</a></span></li>
+			{% endfor %}
+			  {% if user.job_hunter_name == bbs_obj.author_name %}
+			  <li><a href="/bbs_edit/{{ bbs_obj.id }}" class="grey"><i class="glyphicon glyphicon-pencil"></i>&nbsp;<span>修改</span></a></li>
+			  {% endif %}
+			</ul>
+		  </div>
+		  <div class="paddingb20 columnlist">
+		    <br>
+		    <span class="font20 fontbold"><strong>{{ bbs_obj.title }}</strong></span>
+			<br><br>
+			<span class=""><strong>{{ bbs_obj.content|safe}}</strong></span>
+			<br>
+			<div class="margint20">
+			    <span><div class="panel-group" id="accordion">
+				  <div class="">
+					<div class="panel-heading">
+					<a href="" class="grey"><span>{{ bbs_obj.created_date}}</span></a>
+					<a data-toggle="collapse" data-parent="#accordion" href="#collapse0" class="grey">
+					<i class="glyphicon glyphicon-comment marginl10"></i>&nbsp;<span>{{ bbs_obj.comments.count}}条评论</span>
+					</a>
+					<a href="" class="grey"><i class="glyphicon glyphicon-share-alt marginl10"></i>&nbsp;<span>分享</span></a>
+					{% if bbs_obj.isAnonymous == 1 %}
+					<a href="#" class="floatright disabled">
+			        <img src="/static/male-avatar1.png" class="img-responsive img-circle mini-avatar" alt="头像">
+					<p class="small">匿名用户</p>
+					</a>
+					{% else %}
+					<a href="#" class="floatright ">
+			        <img src="/static/male-avatar1.png" class="img-responsive img-circle mini-avatar" alt="头像">
+					<p class="small">{{ bbs_obj.author_name}}</p>
+					</a>
+					{% endif %}
+				  </div>
+				  <div id="collapse0" class="panel-collapse collapse">
+					<div class="panel-body">
+					{% for comment in bbs_obj.comments.all %}
+					  
+					  <div class="paddingb20 solidbordernotop" id="question-com-{{comment.id}}">
+						<br>
+						<ul class="list-unstyled list-inline paddingl20">
+						  <li ><a href="#"><img src="/static/male-avatar1.png" class="img-responsive img-circle lower-avatar" alt="头像"></li>
+						  <li><h4>{{ comment.commenter }}</h4></a></li>
+						</ul>
+						  <p class="marginl40 paddingl20">{{ comment.content|safe }}</p>
+	
+						<ul class="list-inline list-unstyled marginl40 paddingl20">
+						  <li><a href="" class="grey"><span>{{ comment.submit_date }}</span></a></li>
+						  <li><a href="#add_com_content_bbs" id="bbs-com-reply" onclick="document.getElementById('add_com_content_bbs').value='@{{comment.commenter}} ';" class="grey" ><span>回复</span></a></li> 
+						</ul>
+						
+					  </div>
+				
+					  
+					  {% endfor %}
+		  
+					  
+		  			  <div class="solidbordernotop">
+						<form role="form" action="/sub_comment/" method="POST">
+						{% csrf_token %}
+						  <div class="panel-footer">
+						    <div class="input-group">
+							  <input type="text" id="add_com_content_bbs" name='comment_content' class="form-control" placeholder="写下你的评论...">
+							  <input type="hidden" name="bbs_id" value="{{ bbs_obj.id}}" />
+							  <input type="hidden" name="ans_id" value=0 />
+					          <input type="hidden" name="com_id" value=0 />
+							  <span class="input-group-btn">
+								<button class="btn btn-default clrbd440062" type="submit">评论</button>
+							  </span>
+							</div>
+						  </div>
+						 </form>
+					  </div>
+					  
+					</div>
+				  </div>
+				  </div>
+				  
+				  
+				</div>
+				
+				</span>
+				
+			</div>
+		  </div>
+		  
+		  <div class="paddingb20 columnlist">
+		    <br>
+		    <span class=""><strong>{{ num_answers }}个回答</strong></span>
+			<br>
+		  </div>
+		  {% for answer in answers%}
+		  <div class="paddingb20 columnlist" id="ans_{{answer.id}}">
+		    <br>
+			  <ul class="list-unstyled list-inline">
+			    
+				{% if answer.isAnonymous == 1%}
+				<li ><a href="#"><img src="/static/male-avatar1.png" class="img-responsive img-circle lower-avatar" alt="头像">
+			    </li>
+				<li><h4>匿名用户</h4></a></li>
+				{% else %}
+				<li ><a href="#"><img src="/static/male-avatar1.png" class="img-responsive img-circle lower-avatar" alt="头像">
+			    </li>
+				<li><h4>{{ answer.author_name }}</h4></a></li>
+			    {% endif %}
+				{% if user.job_hunter_name == answer.author_name%}
+				<li class="floatright"><a href="/detail/?bbsId={{bbs_obj.id}}&&edit_ans=1&&ans_id={{answer.id}}#lower-answer-form" class="grey"><i class="glyphicon glyphicon-pencil"></i>&nbsp;<span>修改</span></a></li>
+				{% endif %}
+			  </ul>
+			  <p class="marginl40 paddingl20">{{ answer.answer_content|safe }}</p>
+			  <br>
+			    <span><div class="panel-group" id="accordion">
+				  <div class="">
+					<div class="panel-heading">
+					<a href="" class="grey"><span>{{ answer.updated_date }}</span></a>
+					<a data-toggle="collapse" data-parent="#accordion" href="#collapse{{forloop.counter}}" class="grey">
+					<i class="glyphicon glyphicon-comment marginl10"></i>&nbsp;<span>{{ answer.comments.count }}条评论</span>
+					</a>
+					<a href="/like_ans/?bbs_id={{ bbs_obj.id }}&&ans_id={{ answer.id }}" class="grey like-answer"><i class="glyphicon glyphicon-heart  marginl10 heart"></i>&nbsp;<span>{{ answer.anslike_count }}</span></a>
+				  </div>
+				  <div id="collapse{{forloop.counter}}" class="panel-collapse collapse">
+					<div class="panel-body">
+					  {% for comment in answer.comments.all %}
+					  
+					  <div class="paddingb20 solidbordernotop">
+						<br>
+						<ul class="list-unstyled list-inline paddingl20">
+						  <li ><a href="#"><img src="/static/male-avatar1.png" class="img-responsive img-circle lower-avatar" alt="头像"></li>
+						  <li><h4>{{ comment.commenter }}</h4></a></li>
+						</ul>
+						  <p class="marginl40 paddingl20">{{ comment.content|safe }}</p>
+						<ul class="list-inline list-unstyled marginl40 paddingl20">
+						  <li><a href="" class="grey"><span>{{ comment.submit_date }}</span></a></li>
+						  <li><a href="#add_com_content_ans" id="ans-com-reply" onclick="document.getElementById('add_com_content_ans').value='@{{comment.commenter}} ';" class="grey" ><span>回复</span></a></li>
+							  
+						</ul>
+					  </div>
+					  
+					  
+					  {% endfor %}
+		  
+		  			  
+					  
+		  			  <div class="solidbordernotop">
+						<form role="form" action="/sub_comment/" method="POST">
+						{% csrf_token %}
+						  <div class="panel-footer">
+						    <div class="input-group">
+							  <input type="text" id="add_com_content_ans" name='comment_content' class="form-control" placeholder="写下你的评论...">
+							  <input type="hidden" name="bbs_id" value="{{ bbs_obj.id}}" />
+			                  <input type="hidden" name="ans_id" value="{{ answer.id}}" />
+					          <input type="hidden" name="com_id" value=0 />
+							  <span class="input-group-btn">
+								<button class="btn btn-default clrbd440062" type="submit">评论</button>
+							  </span>
+							</div><!-- /input-group -->
+						  </div>
+						 </form>
+					  </div>
+					  
+					</div>
+				  </div>
+				  </div>
+				</div>
+				</span>
+		  </div>
+		  {% endfor %}
+
+		<div class="load-more">
+		<br>
+		  <p>
+		    {% if curIndex >= endIndex %}
+			<button type="button" id="show-more" class="btn btn-default btn-lg btn-block" >
+			没有更多了
+			</button>
+			{% else %}
+		    <button type="button" id="show-more" class="btn btn-default btn-lg btn-block" onclick="javascript:window.location.href='?curIndex={{curIndex}}&&endIndex={{endIndex}}&&onclickType=more&&bbsId={{bbs_obj.id}}#show-more';">
+			更多
+			</button>
+			{% endif %}
+		  </p>
+		</div>
+
+		<div>
+		{% if user != None %}
+		 <div>
+		    <br>
+			<br>
+			
+			<ul class="list-unstyled list-inline">
+			  <li ><a href="#"><img src="male-avatar1.png" class="img-responsive img-circle lower-avatar" alt="头像"></li>
+			  <li><h4>{{user.job_hunter_name}}</h4></a></li>
+			</ul>
+		  </div>
+		  
+		<div class="answer_form" id="lower-answer-form">
+			   {% if ans_content != '' %}
+			   <form action="/answer_edit/?bbsId={{ bbs_obj.id }}&&ansId={{ ansid }}" method="POST">
+			   {% csrf_token %}
+			   
+			   <textarea id="ans_content" name="answer_content" class="xheditor-simple form-control" rows="6">{{ ans_content }}</textarea>
+			   {% else %}
+			   <form action="/sub_answer/?bbsId={{ bbs_obj.id }}" method="POST">
+			   {% csrf_token %}
+			   <textarea id="ans_content" name="answer_content" class="xheditor-simple form-control" rows="6"></textarea>
+			   {% endif %}
+			   <br>
+			   <input type="hidden" name="bbs_id" value="{{ bbs_obj.id}}" />
+			   <ul class="list-unstyled list-inline">
+			    <li class="floatright"><input type="submit" value="发布回答" id="id_submit" /></li>
+				{% if anonymous == 1%}
+				<li class="floatright"><input type="checkbox" value=1 name="anonymous" checked="true">匿名</li>
+				{% else%}
+				<li class="floatright"><input type="checkbox" value=1 name="anonymous">匿名</li>
+				{% endif %}
+			  </ul>
+			  </form>
+			 
+			 <br>
+		</div>
+		{% else %}
+		  <div class="remind_login">
+			<br>
+			<br>
+			<p><a href="/login/">登录</a>后可添加评论</p>
+			<br>
+			<br>
+			<hr>
+			</div>
+		{% endif %}
+		</div>
+
+		</div>
+		<br>
+
+<script type="text/javascript">
+window.document.title="{{bbs_obj.title}}";
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends 'hottopic.html' %}
+
+{% block page-content %}
+<!-- 		提问部分 -->
+		<div class="margint30 col-md-offset-1">
+		    <div><span><h3>{{ tag.tag_name}}</h3></span></div>
+			<hr>
+			{% for bbs in bbs_list %}
+		    <div class="cell">
+			 <ul class="list-inline list-unstyled row">
+			    <li class="col-md-1 col-sm-1">
+				  <div class="avatar">
+				    <p class="small">{{ bbs.author_name}}</p>
+			        <img src="/static/male-avatar1.png" class="img-responsive img-circle mini-avatar" alt="头像">
+				    
+			      </div>
+				</li>
+			    <li class="col-md-9 ol-sm-9">
+				  <div class="topic-body">
+			        <ul class="list-unstyled topic">
+					  <br><br>
+			          <li class="topic-title lead"><a href="/detail/?bbsId={{ bbs.id }}"><h4>{{ bbs.title }}</h4></a></li>
+			        </ul>
+			      </div>
+				</li>
+				<li class="col-md-2 col-sm-2">
+				  <ul class="topic-data list-inline">
+				    <br>
+				    <li class="topic-clicked"> <div>{{ bbs.hit_count}}</div><small>点击</small></li>
+					<li class="topic-answered"><div>{{ bbs.answers_set.count}}</div><small>回答</small></li>
+				  </ul>
+				</li>
+			   </ul>
+			  <hr>
+			</div>
+			{% endfor %}
+
+			
+		</div>
+
+{% endblock %}

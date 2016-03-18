@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-COMPATIBLE" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>个人主页</title>
+  <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/static/css/personal.css" rel="stylesheet">
+
+</head>
+
+<body>
+  <nav class="navbar navbar-inverse navbar-fixed-top navbar-custom">
+  
+  </nav>
+  
+  <div class="container">
+    <div class="row">
+	  <div class="col-sm-4 col-md-3 sidebar">
+	    <div class="avatar center-block">
+	      <img src="/static/male-avatar.png" class="img-responsive img-circle mini-avatar " alt="头像">
+		  <br>
+		  <p class="username"><strong>{{user}}</strong>&nbsp;<small>公司HR</small></p> 
+		</div>
+		<br>
+		<div class="usr-data-hori ">
+		  <ul class="horizontal list-inline list-unstyled center-block">
+		    <li class="my-thread"><a href="#">我的帖子</a><div>5</div></li>
+			<li class="marked"><a href="#">我的收藏</a><div>11</div></li>
+		  </ul>
+		</div>
+		<br><br>
+		<div class="usr-data-list ">
+		  <ul class="data-list list-unstyled">
+		    <li><a href="#">新消息</a></li>
+			<li><a href="#">近期回答</a></li>
+			<li><a href="#">我的积分</a></li>
+		  </ul>
+		</div>
+	  </div>
+	  <div class="col-sm-8 col-md-9">
+	  
+	    <div class="search-bar col-md-offset-4">
+		  <form class="search-bar-input" role="form">
+		    <div class="input-group">
+		      <input  type="text" class="form-control">
+			    <span class="input-group-btn">
+		          <button  class="btn btn-primary search-btn" type="button">
+			        <span class="glyphicon glyphicon-search"></span>
+			      </button>
+			    </span>
+		    </div>
+		  </form>
+		</div> 
+		
+		<br>
+		<div class="showing-bar">
+		</div>
+		
+	  </div>
+	  
+    </div>
+  </div>
+<script src="/static/jquery-1.11.3.min.js"></script>
+    <script src="/static/bootstrap.min.js"></script>
+</body>
+
+</html>

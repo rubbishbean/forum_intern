@@ -1,0 +1,67 @@
+{% extends 'hottopic.html' %}
+
+{% block page-content %}
+		
+		<br>
+		<div>
+		  <div class="clrbedeaf4">
+			<span class="clr440062 font18 fontbold">新消息</span>
+		  </div>
+		  <p>共 <b id="id_all_count">{{results|length}}</b> 条， 未读 <b id="id_unread_count">{{unread_count}}</b> 条</p>
+		  <hr>
+		  {% for result in results %}
+		  
+		  <div class="paddingl10 paddingb20 columnlist">
+		    <br>
+			{% if result.is_reply = True %}
+		    <span class="font15 fontbold"><a href="/detail/?bbsId={{ result.event.content_obj.id }}">{{result.event.content_obj.title }}</a></span>
+			<span class="floatright"><a href="/read_news/?newsId={{result.id}}&&bbsId={{result.event.content_obj.id}}">{{ result.author_name}}在回复中提到了您</a></span>
+			<br><br>
+			<div class="clra6a6a6"><p>{{result.author_name}}:&nbsp;{{ result.event.content|safe}}</p></div>
+			
+			{% if result.is_readed = False%}
+			<span class="clra6a6a6 floatright">未读</span>
+			{% else %}
+			<span class="clra6a6a6 floatright">已读</span>
+			{% endif %}
+			
+			{% endif %}
+			
+			{% if result.is_answer = True %}
+			<span class="font15 fontbold"><a href="/detail/?bbsId={{ result.event.content_obj.bbs.id }}">{{result.event.bbs.title }}</a></span>
+			<span class="floatright"><a href="/read_news/?newsId={{result.id}}&&bbsId={{result.event.bbs.id}}">您有一条新回答</a></span>
+			<br><br>
+			<span class="clra6a6a6">新回答：&nbsp;{{result.event.answer_content}}</span>
+			{% if result.is_readed = False%}
+			<span class="clra6a6a6 floatright">未读</span>
+			{% else %}
+			<span class="clra6a6a6 floatright">已读</span>
+			{% endif %}
+			
+			{% endif %}
+			
+			{% if result.is_reply = False%}
+			{% if result.is_answer = False%}
+			<span class="font15 fontbold"><a href="/detail/?bbsId={{ result.event.content_obj.id }}">{{result.event.content_obj.title }}</a></span>
+			<span class="floatright"><a href="/read_news/?newsId={{result.id}}&&bbsId={{result.event.content_obj.id}}">您有一条新评论</a></span>
+			<br><br>
+			<span class="clra6a6a6">新评论：&nbsp;{{result.event.content}}</span>
+			{% if result.is_readed = False%}
+			<span class="clra6a6a6 floatright">未读</span>
+			{% else %}
+			<span class="clra6a6a6 floatright">已读</span>
+			{% endif %}
+			
+			{% endif %}
+			{% endif %}
+			<br>
+		  </div>
+		  
+		  
+		  {% endfor %}
+		</div>
+	  
+<script type="text/javascript">
+window.document.title="新消息";
+</script>
+{% endblock %}

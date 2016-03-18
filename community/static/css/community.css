@@ -1,0 +1,79 @@
+.navbar-custom{
+    background-color:#440062;
+    color:#ffffff;
+}
+
+.navbar-brand{
+    color:#ffffff;
+}
+
+.navbar-custom .navbar-nav > li > a {
+    color:#fff;
+}
+
+.mini-avatar{
+    margin-top: 10px;
+	margin-bottom: 0px;
+}
+
+.custom-header{
+    margin-top:60px;
+    font-size: 25px;
+	color: #999;
+}
+
+.head-button{
+    background-color: rgba(160,102,188,0.8);/*#AA66BC*/
+	font-size: 15px;
+	color: #fff;
+    width: 110%;
+	margin-left: 15px;
+	margin-top: -10px;
+}
+
+
+.content .topic-title{
+    font-size:15px;
+}
+.content .topic-title a{
+    color:#9945BB;
+}
+
+
+.content .topic-body .tag{
+    margin-top: -15px;
+
+}
+
+.content .topic-body .tag .btn{
+    background-color: rgba(160,102,188,0.8);
+	border-color:rgba(160,102,188,0.8);
+
+}
+
+.content .topic-data .topic-clicked, .topic-answered{
+	background-color:rgba(160,102,188,0.8); /*rgba(116,196,230,0.9)*/
+	color:#fff;
+}
+
+.side-topics{
+    margin-top:110px;
+	margin-left: 65px;
+}
+
+.side-topics .side-header{
+    color:#642292;
+}
+
+.side-topics .hot-list li {
+    margin-bottom: 10px;
+}
+
+.tagbtn a{
+    color: #ffffff;
+}
+
+
+.tagbtn a:hover{
+    text-decoration: none;
+}

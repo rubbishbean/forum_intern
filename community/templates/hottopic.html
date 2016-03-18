@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-COMPATIBLE" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>热门</title>
+    <!-- Bootstrap core CSS -->
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/css/worko2o.css" rel="stylesheet">
+	
+	
+
+</head>
+
+<body>
+  <nav class="navbar navbar-fixed-top clrbd8e44ad clrb8e44ad">
+  <ul class="nav navbar-nav navbar-right ">
+			  {% if user != None %}
+              <li><a href="/user/{{ user.job_hunter_id }}/">{{user.job_hunter_name}}</a></li>
+			  <li><a href="/logout/">退出</a></li>
+			  {% else %}
+			  <li><a href="/login/">登录</a></li>
+			  {% endif %}
+            </ul>
+  
+  </nav>
+  
+  <div class="container">
+    <div class="margint30">
+    <div class="row">
+	  <div class="col-sm-4 col-md-3 sidebar clrbedeaf4">
+	     {% if user != None %}
+	    <div class="avatar center-block margint40 marginl40">
+	      <img src="/static/male-avatar.png" class="img-responsive img-circle mini-avatar " alt="头像">
+		  <br>
+		  <p class="username font20 paddingl20"><strong>{{user.job_hunter_name}}</strong></p> 
+		</div>
+		<br>
+		<div class="usr-data-hori ">
+		  <ul class="horizontal list-inline list-unstyled center-block">
+		    <li class="marginl10"><a href="/user_ask/">我的提问</a><div class="clr8e44ad font24 paddingl10">{{ question_num }}</div></li>
+			<li class="marginl40"><a href="/user_answer/">我的回答</a><div class="clr8e44ad font24 paddingl10">{{ answer_num }}</div></li>
+		  </ul>
+		</div>
+		<br><br>
+		<div class="usr-data-list ">
+		  <ul class="data-list list-unstyled">
+		    <li class="marginb20 marginlp66"><a href="/user_news/">新消息</a> &nbsp; <a href="/user_news/" class="grey"><i class="glyphicon glyphicon glyphicon-comment marginl10 news-icon"></i></a><span class="news-num">{{news_num}}</span></li>
+			<li class="marginb20 marginlp66"><a href="#">近期回答</a></li>
+			<li class="marginb20 marginlp66"><a href="#">我的积分 &nbsp; &nbsp; {% if user.credit != None%}{{ user.credit }}{% else%}0{% endif %}</a></li> 
+		  </ul>
+		</div>
+		{% endif %}
+	  </div>
+	  <div class="col-sm-8 col-md-9">
+		<div class="margint20 ">
+		  <nav class="navbar navbar-default clrbedeaf4" role="navigation">
+			<div class="col-md-6 verticalmiddle">
+			  <ul class="nav nav-justified">
+				<li><a href="/">热门</a></li>
+				<li><a href="/topic/">话题</a></li>
+				<li class="active"><a href="/publish/">提问</a></li>
+			  </ul>
+			</div>
+			<div class="col-md-5 verticalmiddle">
+			  <form class="search-bar-input" role="form" action="/search_keyword/" method="POST">
+			  {% csrf_token %}
+				<div class="input-group">
+				  <input  id="searchName" name="keyword" type="text" class="form-control solidborder1" placeholder="搜索问题、话题. . . ">
+					<span class="input-group-btn">
+					  <button  id="searchconfirm" class="btn btn-primary" type="submit">
+			            <span class="glyphicon glyphicon-search"></span>
+					  </button>
+					</span>
+				</div>
+			  </form>
+			</div> 
+		  </nav>
+		</div>
+<!-- 		提问部分 -->
+        {% block page-content %}
+		<div class="margint30 col-md-offset-1">
+		
+			{% for hot in hotlist %}
+		    <div class="cell">
+			 <ul class="list-inline list-unstyled row">
+			    <li class="col-md-1 col-sm-1">
+				  <div class="avatar">
+				  {% if hot.isAnonymous == 1%}
+				  <p class="small">匿名用户</p>
+			        <img src="/static/male-avatar1.png" class="img-responsive img-circle mini-avatar" alt="头像">
+				  {% else %}
+				  <p class="small">{{ hot.author_name}}</p>
+			        <img src="/static/male-avatar1.png" class="img-responsive img-circle mini-avatar" alt="头像">
+				  {% endif %}
+			      </div>
+				</li>
+			    <li class="col-md-9 col-sm-9">
+				  <div class="topic-body">
+			        <ul class="list-unstyled topic">
+					<br><br>
+			          <li class="topic-title lead "><a href="/detail/?bbsId={{ hot.id }}"><h4>{{ hot.title }}</h4></a></li>
+					  {% if hot.tags.count != 0 %}
+				      <ul class="bbs-tag list-inline">
+				      {% for tag in hot.tags.all %}
+				        <li><span class="badge clrbedeaf4 clr8e44ad font16 "><a href="/topic_detail/{{ tag.id }}">{{ tag }}</a></span></li>
+				      {% endfor %}
+				      </ul>
+					  {% endif %}
+			        </ul>
+			      </div>
+				</li>
+				<li class="col-md-2 col-sm-2">
+				  <ul class="topic-data list-inline">
+				    <br>
+				    <li class="topic-clicked"> <div>{{ hot.hit_count}}</div><small>点击</small></li>
+					<li class="topic-answered"><div>{{ hot.answers_set.count}}</div><small>回答</small></li>
+				  </ul>
+				</li>
+			   </ul>
+			  <hr>
+			</div>
+			{% endfor %}
+
+			
+		</div>
+		{% endblock %}
+		</div>
+	  
+	  
+    </div>
+	</div>
+  </div>
+<script src="/static/jquery-1.11.3.min.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+</body>
+
+</html>

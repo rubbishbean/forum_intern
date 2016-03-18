@@ -1,0 +1,41 @@
+{% extends 'hottopic.html' %}
+
+{% block page-content %}
+		
+		<br>
+		<div>
+		  <div class="clrbedeaf4">
+			<span class="clr440062 font18 fontbold">我的回答</span>
+		  </div>
+		  {% for answer in answer_list %}
+		  <div class="paddingl10 paddingb20 columnlist">
+		    <br>
+		    <span class="font15 fontbold"><a href="/detail/?bbsId={{ answer.bbs.id }}">{{ answer.bbs.title }}</a></span>
+			<br><br>
+		    <span class="clr9b59b6 font15 fontbold">我的回答:</span>
+			<span class="clra6a6a6">{{ answer.answer_content|safe }}</span>
+		  </div>
+		  
+		  
+		  {% endfor %}
+		</div>
+	  
+		<!--注释内容
+		<div class="col-sm-4 col-md-3">
+		<br>
+		  <h5>本周热门</h5>
+		    <ul>
+		      <li role="presentation" class="divider"></li>
+		      <li><a href="#">"去拍啊"获百万天使投资，摄影O2O兴起?</a></li>
+		      <li role="presentation" class="divider"></li>  
+		      <li><a href="#">亚马逊开"生鲜馆"，能否技压群雄</a></li>
+			  <li role="presentation" class="divider"></li>
+		      <li><a href="#">阿里战略投资圆通，快递业格局怎么走?</a></li>
+		      <li role="presentation" class="divider"></li>  
+			</ul>
+		</div>
+		-->
+<script type="text/javascript">
+window.document.title="我的回答";
+</script>
+{% endblock %}

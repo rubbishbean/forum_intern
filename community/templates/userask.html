@@ -1,0 +1,43 @@
+{% extends 'hottopic.html' %}
+
+{% block page-content %}
+		
+		<br>
+		<div>
+		  <div class="clrbedeaf4">
+			<span class="clr440062 font18 fontbold">所有提问</span>
+		  </div>
+		  {% for question in question_list %}
+		  <div class="paddingl10 paddingb20 columnlist">
+		    <br>
+		    <span class="font15 fontbold"><a href="/detail/?bbsId={{ question.id }}">{{ question.title }}</a></span>
+			<br>
+			<div class="panel-heading">
+				<span>{{ question.created_date}}</span>
+				<i class="glyphicon glyphicon-comment marginl10"></i>&nbsp;<span>{{ question.answers_set.count}}个回答</span>
+				<i class="glyphicon glyphicon-comment marginl10"></i>&nbsp;<span>{{ question.comments.count}}条评论</span>
+			</div>
+		  </div>
+		  
+		  {% endfor %}
+		</div>
+	  
+		<!--注释内容
+		<div class="col-sm-4 col-md-3">
+		<br>
+		  <h5>本周热门</h5>
+		    <ul>
+		      <li role="presentation" class="divider"></li>
+		      <li><a href="#">"去拍啊"获百万天使投资，摄影O2O兴起?</a></li>
+		      <li role="presentation" class="divider"></li>  
+		      <li><a href="#">亚马逊开"生鲜馆"，能否技压群雄</a></li>
+			  <li role="presentation" class="divider"></li>
+		      <li><a href="#">阿里战略投资圆通，快递业格局怎么走?</a></li>
+		      <li role="presentation" class="divider"></li>  
+			</ul>
+		</div>
+		-->
+<script type="text/javascript">
+window.document.title="我的提问";
+</script>
+{% endblock %}

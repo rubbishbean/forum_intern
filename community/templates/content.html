@@ -1,0 +1,152 @@
+{% extends 'index.html' %}
+
+{% block page-content %}
+<script src="/static/jquery-1.11.3.min.js"></script>
+<script src="/static/js/bootstrap.min.js"></script>
+<script src="/static/js/jquery-1.4.4.min.js" type="text/javascript"></script>
+<script src="/static/xheditor/xheditor-1.2.2.min.js" type="text/javascript"></script>
+<script type="text/javascript" src="/static/xheditor/xheditor_lang/zh-cn.js"></script>
+<style type="text/css">
+.reply-comment{
+    display: none;
+}
+ </style>
+ 
+<script type="text/javascript">
+$(document).ready(function(){
+  $(".reply").click(function(){
+  $(this).next().toggle();
+  });
+});
+</script>
+<div class="row">
+	    <div class="col-sm-7 col-md-7 col-sm-offset-2 col-md-offset-1 main">  
+		  <div class="content">
+		    <div class="page-header">
+			  <ul class="list-unstyled list-inline">
+			  <br>
+			    <li ><a href="#"><img src="male-avatar1.png" class="img-responsive img-circle lower-avatar" alt="头像">
+			        <small>{{ bbs_obj.author_name}}</small></a>
+			    </li>
+			    <li><h3><b>{{ bbs_obj.title }}</b></h3></li>
+			    
+			  </ul>
+			 
+			  <p >{{ bbs_obj.content|safe}}</p>
+			  <br>
+			  {% if bbs_obj.created_date != bbs_obj.updated_date %}
+				  <small>编辑于{{ bbs_obj.updated_date}}</small>
+			  {% else %}
+				  <small>发表于{{ bbs_obj.created_date}}</small>
+			 {% endif %}
+			  
+			  {% if user.job_hunter_name == bbs_obj.author_name%}
+			  <a href="/bbs_edit/{{ bbs_obj.id }}">编辑</a>
+			  {% endif %}
+			</div>
+			
+			<div><b>{{ num_answers }}个回答</b></div>
+			<hr>
+			
+			<div class="answers">
+			  
+			    {% for answer in answers%}
+				  <div><b>{{ answer.author_name }}</b> </div> 
+				  <br>
+				  <div>{{ answer.answer_content|safe }}</div>
+				  <br>
+				  {{ answer.updated_date }}&nbsp;&nbsp;
+				  {% if user.job_hunter_name == bbs_obj.author_name %}
+				    <a href="/edit_answer/">修改</a>
+				  {% else %}
+				    <a href="#" class = "reply">回复</a>
+					<div class = "reply-comment">
+					<form action="/sub_comment/" method="POST" >
+			        {% csrf_token %}
+			        <textarea cols=50 rows=2 name='comment_content'></textarea>
+					<input type="hidden" name="bbs_id" value="{{ bbs_obj.id}}" />
+			        <input type="hidden" name="ans_id" value="{{ answer.id}}" />
+					<input type="hidden" name="com_id" value=0 />
+			        <input type="submit" value="提交" id="ansid_submit" />
+			        </form>
+					</div>
+				  {% endif %}
+				    <ul class="">
+				    {% for comment in answer.comments_set.all %}
+					  {% if comment.toComment_id = 0 %}
+					  <hr>
+					  <div><b>{{ comment.commenter }}</b>&nbsp;回复 <b>{{ answer.author_name }}</b></div> 
+				      <br>
+				      <div>{{ comment.comment|safe }}</div>
+				     {{ comment.submit_date }}&nbsp;&nbsp;
+					  <a href="#" class = "reply">回复</a>
+					  <div class = "reply-comment">
+					  <form action="/sub_comment/" method="POST" >
+			          {% csrf_token %}
+			          <textarea cols=50 rows=2 name='comment_content'></textarea>
+					  <input type="hidden" name="bbs_id" value="{{ bbs_obj.id}}" />
+			          <input type="hidden" name="ans_id" value="{{ answer.id}}" />
+					  <input type="hidden" name="com_id" value="{{ comment.id}}" />
+			          <input type="submit" value="提交" id="ansid_submit" />
+			          </form>
+					  </div>
+					 
+					 <ul class="">
+					 {% for subcom in answer.comments_set.all %}
+					   {% if subcom.toComment_id = comment.id %}
+					    <hr>
+					   <div><b>{{ subcom.commenter }}</b>&nbsp;回复 <b>{{ comment.commenter }}</b></div> 
+				       <div>{{ subcom.comment|safe }}</div>
+				       {{ subcom.submit_date }}&nbsp;&nbsp;
+					   
+					   {% endif %}
+					 {% endfor %}
+					 </ul>
+					 {% endif %}
+					{% endfor %}
+					</ul>
+				  <hr>
+				{% endfor %}
+
+			</div>
+			{% if user != None %}
+			<div class="answer_form">
+			 <form action="/sub_answer/" method="POST">
+			   {% csrf_token %}
+			   <textarea id="ans_content" name="answer_content" class="xheditor-simple" rows="8" cols="80" style="width: 90%"></textarea>
+			   <br>
+			   <input type="hidden" name="bbs_id" value="{{ bbs_obj.id}}" />
+			   <input type="submit" value="发表答案" id="id_submit" />
+			 </form>
+			 <br>
+			</div>
+			{% else %}
+			<div class="remind_login">
+			<br>
+			<br>
+			<p><a href="/login/">登录</a>后可添加评论</p>
+			<br>
+			<br>
+			<hr>
+			</div>
+			{% endif %}
+		    
+		  </div>
+		  
+		</div>
+		
+		<div class="col-sm-3 col-md-3">
+		  <div class="side-topics">
+		    <h4 class="side-header"><strong>热门话题</strong> <small>  >></small></h4>
+			<hr>
+			<ul class="hot-list list-unstyled">
+			{% for li in hotlist %}
+		       <li><a href="/detail/{{ li.id }}/">{{ li.title }}</a></li>
+			{% endfor %}
+		    </ul>
+		  
+		  </div>
+		</div>
+</div>
+
+{% endblock %}
